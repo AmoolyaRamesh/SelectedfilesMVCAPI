@@ -26,10 +26,10 @@ namespace MVC.Controllers
         // GET: Students
         public ActionResult Index()
         {
-            IEnumerable<mvcStudentModel> stulist;
+            IEnumerable<mvcStudentModel> studentList;
             HttpResponseMessage response = GlobalVariables.WebApiClient.GetAsync("Students").Result;
-            stulist = response.Content.ReadAsAsync<IEnumerable<mvcStudentModel>>().Result;
-            return View(stulist);
+            studentList = response.Content.ReadAsAsync<IEnumerable<mvcStudentModel>>().Result;
+            return View(studentList);
             
         }
         public ActionResult AddOrEdit(int id = 0)
@@ -43,16 +43,16 @@ namespace MVC.Controllers
             }
         }
         [HttpPost]
-        public ActionResult AddOrEdit(mvcStudentModel stu)
+        public ActionResult AddOrEdit(mvcStudentModel student)
         {
-            if (stu.StuentId == 0)
+            if (student.StuentId == 0)
             {
-                HttpResponseMessage response = GlobalVariables.WebApiClient.PostAsJsonAsync("Students", stu).Result;
+                HttpResponseMessage response = GlobalVariables.WebApiClient.PostAsJsonAsync("Students", student).Result;
                 TempData["SuccessMessage"] = "Saved Successfully";
             }
             else
             {
-                HttpResponseMessage response = GlobalVariables.WebApiClient.PutAsJsonAsync("Students/" + stu.StuentId, stu).Result;
+                HttpResponseMessage response = GlobalVariables.WebApiClient.PutAsJsonAsync("Students/" + student.StuentId, student).Result;
                 TempData["SuccessMessage"] = "Updated Successfully";
             }
             return RedirectToAction("Index");
