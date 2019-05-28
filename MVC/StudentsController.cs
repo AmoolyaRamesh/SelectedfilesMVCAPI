@@ -1,4 +1,5 @@
-﻿using MVC.Models;
+﻿using Logger;
+using MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,19 @@ using System.Web.Mvc;
 namespace MVC.Controllers
 {
     public class StudentsController : Controller
+
     {
+        private Ilog _Ilog;
+        public StudentsController()
+        {
+            _Ilog = Log.GetInstance;
+        }
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            _Ilog.LogException(filterContext.Exception.ToString());
+            filterContext.ExceptionHandled = true;
+            this.View("Error").ExecuteResult(this.ControllerContext);
+        }
         // GET: Students
         public ActionResult Index()
         {
